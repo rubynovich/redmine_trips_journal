@@ -1,0 +1,14 @@
+# Russian strings go here for Rails i18n
+ru:
+  label_trip_plural: "Журнал разъездов"
+  label_trip_new: "Новая запись"
+  label_trip_edit: "Правка записи"
+  label_issue_priority: "Приоритет задачи"
+  label_issue_tracker: "Трекер задачи"  
+  label_issue_status: "Статус задачи"
+  label_trip_time: "Время отсутствия"
+  field_trip_start_time: "Время отъезда"
+  field_trip_end_time: "Время возврата"
+  field_trip_on: "Дата отъезда"
+  trips_issue_subject: "[Разъезд] %{comments}"
+  

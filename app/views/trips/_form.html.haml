@@ -1,0 +1,15 @@
+= error_messages_for @object
+= hidden_field_tag :current_date, params[:current_date]
+
+.box.tabular
+  %p
+    = f.select :project_id, @projects.map{ |i| [h(i.name), i.id] }, :include_blank => true, :required => true
+  %p
+    = f.text_field :trip_on, :size => 10, :required => true
+    = calendar_for('trip_trip_on')
+  %p
+    = f.text_field :trip_start_time, :size => 6, :required => true
+  %p
+    = f.text_field :trip_end_time, :size => 6, :required => true
+  %p  
+    = f.text_field :comments, :size => 100, :required => true
