@@ -7,7 +7,8 @@ class TripsController < ApplicationController
   before_filter :find_object, :only => [:edit, :show, :update, :destroy]
 
   def index
-    @collection = Trip.actual(@current_date, @current_date+7.days).in_projects(@projects.map(&:id))
+      @current_dates = [@current_date-2.week, @current_date-1.week, @current_date, @current_date+1.week, @current_date+2.week]  
+    @collection = Trip.actual(@current_date, @current_date+6.days).in_projects(@projects.map(&:id))
   end
   
   def new
@@ -83,6 +84,7 @@ class TripsController < ApplicationController
     
     def new_object
       @object = Trip.new(params[:trip])
+      @object.project_id = @project.id if get_project.present?
     end
     
     def find_object

@@ -1,12 +1,49 @@
 .contextual
   = link_to l(:label_trip_new), {:action => :new, :trip => {:project_id => params[:project_id] }}, :class => 'icon icon-add'
-%h2
-  =l(:label_trip_plural)
+
+%h2=l(:label_trip_plural)
+
+%fieldset
+  %legend= l(:label_filter_plural)
+
+  - form_tag({}, :method => :get) do
+    - if @project.present?
+      = hidden_field_tag :project_id, @project.identifier
+    %label{:for => :current_date}= l(:field_trip_on) + ":"
+    %select{:id => :current_date, :name => :current_date, :class => "small", :onchange => "this.form.submit(); return false;"}
+      - @current_dates.each do |cur_date|        
+        - if @current_date == cur_date
+          %option{:value => cur_date, :selected => "selected"}
+            = cur_date.strftime("%d.%m - ") +        |
+              (cur_date+6.days).strftime("%d.%m.%Y") |
+        - else
+          %option{:value => cur_date}
+            = cur_date.strftime("%d.%m - ") +        |
+              (cur_date+6.days).strftime("%d.%m.%Y") |
+              
+  - form_tag({}, :method => :get) do
+    = hidden_field_tag :current_date, @current_date
+    %label{:for=>'project_id'}= l(:field_project) + ":"
+    %select{:id => 'project_id', :name => 'project_id', :class => "small", :onchange => "this.form.submit(); return false;"}
+      %option
+        = l(:label_project_all)
+      - @projects.each do |project|
+        - if params[:project_id] == project.identifier
+          %option{:value => project.identifier, :selected => "selected"}
+            = project.name
+        - else
+          %option{:value => project.identifier}
+            = project.name
+  - if @project.present?
+    = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'    
+
+%br
 
 - if @collection.any?
   %table.list
     %thead
       %tr
+        %th="#"      
         %th=l(:field_project)
         %th=l(:label_member)
         %th=l(:field_trip_on)
@@ -16,6 +53,9 @@
     %tbody
       - @collection.each do |object|
         %tr{:class=>cycle("odd", "even")}
+          %td{:align=>"center"}
+            - if object.issue.present?
+              = link_to object.issue.id, issue_path(object.issue), :title => object.issue.subject
           %td
             = link_to_project object.project
           %td
@@ -25,14 +65,21 @@
           %td{:align=>"center"}
             = format_time(object.trip_start_time, false)
             = "-"
-            = format_time(object.trip_end_time, false)
+            = format_time(object.trip_end_time, false)          
           %td
             =h object.comments
           %td.buttons
-            = link_to l(:button_update), {:action => 'edit', :id => object.id}, :class => 'icon icon-edit'
-            = link_to l(:button_delete), trip_path(object), :method => :delete, :confirm => l(:text_are_you_sure), :class => 'icon icon-del'
+            - if User.current == object.user
+              = link_to l(:button_update), {:action => 'edit', :id => object.id}, :class => 'icon icon-edit'
+              = link_to l(:button_delete), trip_path(object), :method => :delete, :confirm => l(:text_are_you_sure), :class => 'icon icon-del'
 - else
   %p.nodata
     = l(:label_no_data)
+
+%h2= l(:label_trip_new)
+  
+- labelled_form_for @object do |f|
+  = render :partial => 'form', :locals => {:f => f}
+  = submit_tag l(:button_save), :disabled => false
 
 - html_title(l(:label_trip_plural))

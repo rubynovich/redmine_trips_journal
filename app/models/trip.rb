@@ -10,8 +10,8 @@ class Trip < ActiveRecord::Base
   
   validates_presence_of :project_id, :trip_on, :trip_start_time, 
     :trip_end_time, :comments, :user_id
-  validates_uniqueness_of :trip_on, :scope => [:user_id, :trip_start_time]
-  validates_uniqueness_of :trip_start_time, :scope => [:trip_on, :user_id]
+  validates_uniqueness_of :trip_on, :scope => [:user_id, :trip_start_time, :project_id]
+  validates_uniqueness_of :trip_start_time, :scope => [:trip_on, :user_id, :project_id]
   validate :check_trip_on
   validate :check_trip_end_time, :if => lambda{ |object|
     object.trip_start_time.present? && object.trip_end_time.present? 
@@ -26,7 +26,7 @@ class Trip < ActiveRecord::Base
       if start_date.present? && due_date.present?
         where("trip_on BETWEEN ? AND ?", start_date, due_date)
       end          
-    }
+    }    
   else
     named_scope :in_projects, lambda{ |project_ids|
       {
