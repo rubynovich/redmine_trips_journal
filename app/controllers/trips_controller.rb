@@ -19,7 +19,7 @@ class TripsController < ApplicationController
       @object.create_issue
       @object.save
       flash[:notice] = l(:notice_successful_create)
-      redirect_to :action => :index
+      redirect_back_or_default :action => :index
     else
       render :action => :new
     end
@@ -33,8 +33,10 @@ class TripsController < ApplicationController
   
   def update
     if @object.update_attributes(params[:trip])
+      @object.update_issue
+      @object.update_plan if @object.issue && @object.estimated_time
       flash[:notice] = l(:notice_successful_update)    
-      redirect_to :action => :index
+      redirect_back_or_default :action => :index
     else
       render :action => :edit
     end  
@@ -48,7 +50,7 @@ class TripsController < ApplicationController
     else
       flash[:notice] = l(:notice_successful_delete)
     end
-    redirect_to :action => :index
+    redirect_to params.merge(:action => :index)
   end
   
   private

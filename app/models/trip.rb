@@ -3,8 +3,10 @@ class Trip < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :project
-  belongs_to :issue
-  belongs_to :estimated_time
+  belongs_to :issue, :dependent => :destroy
+  if Redmine::Plugin.find(:redmine_planning)
+    belongs_to :estimated_time, :dependent => :delete
+  end
   
   validates_presence_of :project_id, :trip_on, :trip_start_time, 
     :trip_end_time, :comments, :user_id
@@ -55,33 +57,56 @@ class Trip < ActiveRecord::Base
   end
   
   def create_issue
-      settings = Setting[:plugin_redmine_trips_journal]
-      self.issue = Issue.create(
-        :status => IssueStatus.find(settings[:issue_status]), 
-        :tracker => Tracker.find(settings[:issue_tracker]), 
-        :subject => I18n.t(:trips_issue_subject, 
-          :comments => self.comments
-        ),
-        :project => self.project, 
-        :description => self.comments, 
-        :author => User.current, 
-        :start_date => self.trip_on,
-        :due_date => self.trip_on,
-        :priority => IssuePriority.find(settings[:issue_priority]),
-        :assigned_to => User.current)
-      
-      create_plan if self.issue.present?
-    rescue
+    settings = Setting[:plugin_redmine_trips_journal]
+    self.issue = Issue.create(
+      :status => IssueStatus.find(settings[:issue_status]), 
+      :tracker => Tracker.find(settings[:issue_tracker]), 
+      :subject => I18n.t(:trips_issue_subject, 
+        :comments => self.comments
+      ),
+      :project => self.project, 
+      :description => self.comments, 
+      :author => User.current, 
+      :start_date => self.trip_on,
+      :due_date => self.trip_on,
+      :priority => IssuePriority.find(settings[:issue_priority]),
+      :assigned_to => User.current)
+    
+    create_plan if self.issue.present?
+  end
+  
+  def update_issue
+    self.issue.update_attributes(
+      :subject => issue_subject,
+      :project => self.project, 
+      :description => self.comments, 
+      :author => User.current, 
+      :start_date => self.trip_on,
+      :due_date => self.trip_on,
+      :assigned_to => User.current) if self.issue.present?
   end
   
   def create_plan      
-      self.estimated_time = EstimatedTime.create(
-        :issue => self.issue,
-        :plan_on => self.trip_on,
-        :user => User.current,
-        :comments => self.comments,
-        :hours => (self.trip_end_time - self.trip_start_time)/3600
-      ) if Redmine::Plugin.find(:redmine_planning)
-    rescue
+    self.estimated_time = EstimatedTime.create(
+      :issue => self.issue,
+      :plan_on => self.trip_on,
+      :user => User.current,
+      :comments => self.comments,
+      :hours => (self.trip_end_time - self.trip_start_time)/3600
+    ) if Redmine::Plugin.find(:redmine_planning)
   end
+  
+  def update_plan
+    self.estimated_time.update_attributes(
+      :plan_on => self.trip_on,
+      :user => User.current,
+      :comments => self.comments,
+      :hours => (self.trip_end_time - self.trip_start_time)/3600
+    ) if Redmine::Plugin.find(:redmine_planning)
+  end
+  
+  private
+    def issue_subject
+      I18n.t(:trips_issue_subject, :comments => self.comments)      
+    end
 end

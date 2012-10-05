@@ -11,4 +11,5 @@ ru:
   field_trip_end_time: "Время возврата"
   field_trip_on: "Дата отъезда"
   trips_issue_subject: "[Разъезд] %{comments}"
+  error_unable_delete_trip: "Запись об отъезде не может быть удалена"
   
