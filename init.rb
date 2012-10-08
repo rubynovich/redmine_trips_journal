@@ -13,9 +13,9 @@ Redmine::Plugin.register :redmine_trips_journal do
   end
 
   settings :default => { 
-                         :issue_tracker => Tracker.first,
-                         :issue_priority => IssuePriority.default,
-                         :issue_status => IssueStatus.default
+                         :issue_tracker => Tracker.first.id,
+                         :issue_priority => IssuePriority.default.id,
+                         :issue_status => IssueStatus.default.id
                        }, 
            :partial => 'trips/settings'
            
