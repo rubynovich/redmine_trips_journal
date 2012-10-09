@@ -66,11 +66,7 @@ class TripsController < ApplicationController
     end
 
     def get_projects
-#      @projects = if get_project.present?
-#        [@project]
-#      else
-        Member.find(:all, :conditions => {:user_id => User.current.id}).map(&:project)
-#      end    
+      @projects =  Member.find(:all, :conditions => {:user_id => User.current.id}).map(&:project)
     end
     
     def get_current_date
