@@ -1,10 +1,10 @@
 require 'redmine'
 
 Redmine::Plugin.register :redmine_trips_journal do
-  name 'Redmine Trips Journal plugin'
+  name 'Журнал разъездов'
   author 'Roman Shipiev'
-  description 'Journal of trips for Redmine'
-  version '0.0.1'
+  description 'Журнал разъездов нужен, чтобы регистрировать местные командировки работников длительностью не более суток. При подключении модуля появляется ссылка "Журнал разъездов" в top_menu (там, где и "Домашняя страница")'
+  version '0.0.2'
   url 'https://github.com/rubynovich/redmine_redmine_trips_journal'
   author_url 'http://roman.shipiev.me'
 
