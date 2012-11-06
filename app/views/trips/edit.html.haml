@@ -4,6 +4,7 @@
   = l(:label_trip_edit)
 
 - labelled_form_for @object do |f|
+  = back_url_hidden_field_tag 
   = render :partial => 'form', :locals => {:f => f}
   = submit_tag l(:button_save)
 

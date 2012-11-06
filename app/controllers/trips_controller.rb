@@ -1,13 +1,14 @@
-class TripsController < ApplicationController
+class TripsController < ApplicationController  
   unloadable
   before_filter :author_required, :only => [:edit, :update, :destroy, :show]
   before_filter :get_projects, :only => [:index, :new, :create, :edit, :update]  
-  before_filter :get_current_date
+  before_filter :get_issues, :only => [:index, :new, :create, :edit, :update]    
+  before_filter :get_current_date  
   before_filter :new_object, :only => [:index, :new, :create]
   before_filter :find_object, :only => [:edit, :show, :update, :destroy]
 
   def index
-      @current_dates = [@current_date-2.week, @current_date-1.week, @current_date, @current_date+1.week, @current_date+2.week]  
+    @current_dates = [@current_date-2.week, @current_date-1.week, @current_date, @current_date+1.week, @current_date+2.week]  
     @collection = Trip.actual(@current_date, @current_date+6.days).in_projects(@projects.map(&:id))
   end
   
@@ -17,7 +18,7 @@ class TripsController < ApplicationController
   def create
     @object.user = User.current
     if @object.valid?
-      @object.create_issue
+      @object.create_plan
       @object.save
       flash[:notice] = l(:notice_successful_create)
       redirect_back_or_default :action => :index
@@ -34,8 +35,12 @@ class TripsController < ApplicationController
   
   def update
     if @object.update_attributes(params[:trip])
-      @object.update_issue
-      @object.update_plan if @object.issue && @object.estimated_time
+      if @object.issue && @object.estimated_time
+        @object.update_plan 
+      else
+        @object.create_plan
+        @object.save
+      end
       flash[:notice] = l(:notice_successful_update)    
       redirect_back_or_default :action => :index
     else
@@ -63,6 +68,18 @@ class TripsController < ApplicationController
       @project = if params[:project_id].present?
         Project.find_by_identifier(params[:project_id])
       end    
+    end
+    
+    def get_issues
+      conditions = {:assigned_to_id => ([User.current.id] + User.current.group_ids)}
+      if @project.present?
+        conditions.merge!(:project_id => @project.id)
+      end
+      @issues = Issue.open.visible.on_active_project.
+        find(:all, 
+        :conditions => conditions, 
+        :include => [:status, :project, :tracker, :priority], 
+        :order => "#{IssuePriority.table_name}.position DESC, #{Issue.table_name}.due_date")
     end
 
     def get_projects

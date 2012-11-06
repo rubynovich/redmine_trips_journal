@@ -44,7 +44,9 @@
     %thead
       %tr
         %th="#"      
-        %th=l(:field_project)
+        %th=l(:field_issue)
+        - if Redmine::Plugin.find(:redmine_planning)
+          %th=l(:label_plan)
         %th=l(:label_member)
         %th=l(:field_trip_on)
         %th=l(:label_trip_time)
@@ -57,7 +59,11 @@
             - if object.issue.present?
               = link_to object.issue.id, issue_path(object.issue), :title => object.issue.subject
           %td
-            = link_to_project object.project
+            = link_to object.issue.subject, issue_path(object.issue), :title => object.project.name
+          - if Redmine::Plugin.find(:redmine_planning)
+            %td
+              - if object.estimated_time.present?
+                = link_to html_hours("%.2f" % object.estimated_time.hours), {:controller => :estimated_times, :action => :list, :issue_id => object.issue_id}, :title => object.comments
           %td
             = link_to_user object.user
           %td{:align=>"center"}

@@ -1,9 +1,10 @@
 = error_messages_for @object
-= back_url_hidden_field_tag 
 
 .box.tabular
-  %p
+  -#%p
     = f.select :project_id, @projects.map{ |i| [h(i.name), i.id] }, :include_blank => true, :required => true
+  %p
+    = f.select :issue_id, @issues.map{ |i| [h("##{i.id} #{i.subject}"), i.id] }, :include_blank => true, :required => true
   %p
     = f.text_field :trip_on, :size => 10, :required => true
     = calendar_for('trip_trip_on')
