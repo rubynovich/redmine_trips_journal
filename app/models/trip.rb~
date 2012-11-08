@@ -82,7 +82,7 @@ class Trip < ActiveRecord::Base
   end
   
   private
-#    def issue_subject
-#      I18n.t(:trips_issue_subject, :comments => self.comments)      
-#    end
+    def issue_subject
+      I18n.t(:trips_issue_subject, :comments => self.comments)      
+    end
 end
