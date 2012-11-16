@@ -57,9 +57,10 @@
         %tr{:class=>cycle("odd", "even")}
           %td{:align=>"center"}
             - if object.issue.present?
-              = link_to object.issue.id, issue_path(object.issue), :title => object.issue.subject
+              = link_to object.issue_id, issue_path(object.issue), :title => object.issue.subject
           %td
-            = link_to object.issue.subject, issue_path(object.issue), :title => object.project.name
+            - if object.issue.present?          
+              = link_to object.issue.subject, issue_path(object.issue), :title => object.project.name
           - if Redmine::Plugin.find(:redmine_planning)
             %td
               - if object.estimated_time.present?

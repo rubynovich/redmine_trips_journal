@@ -9,8 +9,8 @@ class Trip < ActiveRecord::Base
   end
    
   before_validation :fresh_project_id
-    validates_presence_of :project_id, :issue_id, :trip_on, :trip_start_time, 
-    :trip_end_time, :comments, :user_id
+  validates_presence_of :project_id, :issue_id, :trip_on, 
+    :trip_start_time, :trip_end_time, :comments, :user_id
   validates_uniqueness_of :trip_on, :scope => [:user_id, :trip_start_time, :project_id]
   validates_uniqueness_of :trip_start_time, :scope => [:trip_on, :user_id, :project_id]
   validate :check_trip_on
