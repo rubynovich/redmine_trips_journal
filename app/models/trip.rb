@@ -3,7 +3,7 @@ class Trip < ActiveRecord::Base
   
   belongs_to :user
   belongs_to :project
-  belongs_to :issue, :dependent => :destroy
+  belongs_to :issue
   if Redmine::Plugin.find(:redmine_planning)
     belongs_to :estimated_time, :dependent => :delete    
   end
