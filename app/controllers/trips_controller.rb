@@ -9,7 +9,8 @@ class TripsController < ApplicationController
 
   def index
     @current_dates = [@current_date-2.week, @current_date-1.week, @current_date, @current_date+1.week, @current_date+2.week]  
-    @collection = Trip.actual(@current_date, @current_date+6.days).in_projects(@projects.map(&:id))
+    @collection = Trip.actual(@current_date, @current_date+6.days)
+#    .in_projects(@projects.map(&:id))
   end
   
   def new
@@ -83,7 +84,8 @@ class TripsController < ApplicationController
     end
 
     def get_projects
-      @projects =  Member.find(:all, :conditions => {:user_id => User.current.id}).map(&:project)
+      @projects = Project.active.all
+#      Member.find(:all, :conditions => {:user_id => User.current.id}).map(&:project)
     end
     
     def get_current_date
