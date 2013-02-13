@@ -9,8 +9,10 @@
     = f.text_field :trip_on, :size => 10, :required => true
     = calendar_for('trip_trip_on')
   %p
-    = f.text_field :trip_start_time, :size => 6, :required => true
+    = label_tag_for :trip_start_time, :required => true
+    = f.time_select :trip_start_time, :minute_step => 15
   %p
-    = f.text_field :trip_end_time, :size => 6, :required => true
-  %p  
+    = label_tag_for :trip_end_time, :required => true
+    = f.time_select :trip_end_time, :minute_step => 15
+  %p
     = f.text_field :comments, :size => 100, :required => true

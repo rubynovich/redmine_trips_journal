@@ -14,9 +14,7 @@ class Trip < ActiveRecord::Base
   validates_uniqueness_of :trip_on, :scope => [:user_id, :trip_start_time, :project_id]
   validates_uniqueness_of :trip_start_time, :scope => [:trip_on, :user_id, :project_id]
   validate :check_trip_on
-  validate :check_trip_end_time, :if => lambda{ |object|
-    object.trip_start_time.present? && object.trip_end_time.present?
-  }
+  validate :check_trip_end_time, :if => lambda{ |o| o.trip_start_time.present? && o.trip_end_time.present? }
 
   if Rails::VERSION::MAJOR >= 3
     scope :in_projects, lambda{ |project_ids|
@@ -52,7 +50,7 @@ class Trip < ActiveRecord::Base
   end
 
   def check_trip_end_time
-    if self.trip_end_time-self.trip_start_time <= 0.0
+    if self.trip_end_time.seconds_since_midnight-self.trip_start_time.seconds_since_midnight <= 0
       errors.add :trip_start_time, :invalid
       errors.add :trip_end_time, :invalid
     end
@@ -68,7 +66,7 @@ class Trip < ActiveRecord::Base
       :plan_on => self.trip_on,
       :user => User.current,
       :comments => self.comments,
-      :hours => (self.trip_end_time - self.trip_start_time)/3600
+      :hours => (self.trip_end_time.seconds_since_midnight - self.trip_start_time.seconds_since_midnight)/3600.0
     ) if Redmine::Plugin.find(:redmine_planning)
   end
 
@@ -77,7 +75,7 @@ class Trip < ActiveRecord::Base
       :plan_on => self.trip_on,
       :user => User.current,
       :comments => self.comments,
-      :hours => (self.trip_end_time - self.trip_start_time)/3600
+      :hours => (self.trip_end_time.seconds_since_midnight - self.trip_start_time.seconds_since_midnight)/3600.0
     ) if Redmine::Plugin.find(:redmine_planning)
   end
 end
