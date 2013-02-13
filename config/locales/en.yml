@@ -1,3 +1,14 @@
 # English strings go here for Rails i18n
 en:
-  my_label: "My label"
+  project_module_trips: "Trips"
+  label_trip_plural: "Trips"
+  label_trip_new: "New record"
+  label_trip_edit: "Edit record"
+  label_issue_priority: "Issue Priority"
+  label_issue_tracker: "Issue Tracker"
+  label_issue_status: "Issue Status"
+  label_trip_time: "Trip time"
+  field_trip_start_time: "Trip start time"
+  field_trip_end_time: "Trip end time"
+  field_trip_on: "Trip on"
+  error_unable_delete_trip: "You can't delete the record about trip"

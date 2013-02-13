@@ -1,7 +1,7 @@
 # Russian strings go here for Rails i18n
 ru:
-  project_module_trips: "Журнал разъездов"
-  label_trip_plural: "Журнал разъездов"
+  project_module_trips: "Разъезды"
+  label_trip_plural: "Разъезды"
   label_trip_new: "Новая запись"
   label_trip_edit: "Правка записи"
   label_issue_priority: "Приоритет задачи"
@@ -11,5 +11,4 @@ ru:
   field_trip_start_time: "Время отъезда"
   field_trip_end_time: "Время возврата"
   field_trip_on: "Дата отъезда"
-  trips_issue_subject: "[Разъезд] %{comments}"
   error_unable_delete_trip: "Запись об отъезде не может быть удалена"

@@ -14,5 +14,5 @@ Redmine::Plugin.register :redmine_trips_journal do
 
   menu :top_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{User.current.logged?}
 
-  menu :project_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_planning, :param => :project_id, :if => Proc.new{User.current.logged?}, :require => :member
+  menu :project_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{User.current.logged?}, :require => :member
 end
