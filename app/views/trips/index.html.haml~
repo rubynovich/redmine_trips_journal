@@ -85,9 +85,8 @@
 
 %h2= l(:label_trip_new)
 
-- form = labelled_form_for @object do |f|
+- labelled_form_for @object do |f|
   = render :partial => 'form', :locals => {:f => f}
   = submit_tag l(:button_save), :disabled => false
-= form if Rails::VERSION::MAJOR >= 3
 
 - html_title(l(:label_trip_plural))

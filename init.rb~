@@ -9,8 +9,15 @@ Redmine::Plugin.register :redmine_trips_journal do
   author_url 'http://roman.shipiev.me'
 
   project_module :trips do
-
+#    permission :view_trips, :estimated_times => [:index], :public => true
   end
+
+#  settings :default => {
+#                         :issue_tracker => Tracker.first.id,
+#                         :issue_priority => IssuePriority.default.id,
+#                         :issue_status => IssueStatus.default.id
+#                       },
+#           :partial => 'trips/settings'
 
   menu :top_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{User.current.logged?}
 

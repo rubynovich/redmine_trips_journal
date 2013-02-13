@@ -6,14 +6,14 @@
 
 = Redmine trips journal plugin
 
-Plugin is used for registration of trips employees (duration of trips are less 24 hours)
+Journal of trips for Redmine
 
 == Installation
 
   cd vendor/plugins
   git clone git://github.com/rubynovich/redmine_trips_journal.git
   cd ../..
-  rake db:migrate:plugins RAILS_ENV=production
+  rake db:migrate:plugins RAILS_ENV=production  
 
 *or*
 
@@ -25,12 +25,12 @@ Plugin is used for registration of trips employees (duration of trips are less 2
   cd vendor/plugins/redmine_trips_journal
   git pull
   cd ../../..
-  rake db:migrate:plugins RAILS_ENV=production
-
+  rake db:migrate:plugins RAILS_ENV=production  
+  
 *or*
 
   ./script/plugin update
-  rake db:migrate:plugins RAILS_ENV=production
+  rake db:migrate:plugins RAILS_ENV=production    
 
 == Remove
 
