@@ -1,5 +1,6 @@
 # Russian strings go here for Rails i18n
 ru:
+  permission_view_trips: "Просмотр разъездов"
   project_module_trips: "Разъезды"
   label_trip_plural: "Разъезды"
   label_trip_new: "Новая запись"

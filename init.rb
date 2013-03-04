@@ -9,10 +9,10 @@ Redmine::Plugin.register :redmine_trips_journal do
   author_url 'http://roman.shipiev.me'
 
   project_module :trips do
-
+    permission :view_trips,  :trips => [:index, :show]
   end
 
-  menu :top_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{User.current.logged?}
+  menu :top_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{ User.current.allowed_to?({:controller => :trips, :action => :index}, nil, {:global => true}) }
 
-  menu :project_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{User.current.logged?}, :require => :member
+  menu :project_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{ User.current.allowed_to?({:controller => :trips, :action => :index}, nil, {:global => true}) }
 end

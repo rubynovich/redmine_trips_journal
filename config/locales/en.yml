@@ -1,5 +1,6 @@
 # English strings go here for Rails i18n
 en:
+  permission_view_trips: "View trips"
   project_module_trips: "Trips"
   label_trip_plural: "Trips"
   label_trip_new: "New record"
