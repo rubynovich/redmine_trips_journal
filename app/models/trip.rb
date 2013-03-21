@@ -57,7 +57,7 @@ class Trip < ActiveRecord::Base
   end
 
   def fresh_project_id
-    self.project_id = self.issue.project_id
+    self.project_id = self.issue.try(:project_id)
   end
 
   def create_plan
