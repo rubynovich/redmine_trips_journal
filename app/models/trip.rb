@@ -44,7 +44,7 @@ class Trip < ActiveRecord::Base
   end
 
   def check_trip_on
-    if self.trip_on < Date.today
+    if self.trip_on && self.trip_on < Date.today
       errors.add :trip_on, :invalid
     end
   end
