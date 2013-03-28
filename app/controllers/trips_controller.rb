@@ -79,11 +79,12 @@ class TripsController < ApplicationController
         find(:all,
         :conditions => conditions,
         :include => [:status, :project, :tracker, :priority],
-        :order => "#{IssuePriority.table_name}.position DESC, #{Issue.table_name}.due_date")
+        :order => "#{Issue.table_name}.id DESC")
+#        :order => "#{IssuePriority.table_name}.position DESC, #{Issue.table_name}.due_date")
     end
 
     def get_projects
-      @projects = Project.active.all
+      @projects = Project.active.all(:order => :name)
     end
 
     def get_current_date
