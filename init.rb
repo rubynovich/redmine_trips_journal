@@ -3,9 +3,9 @@ require 'redmine'
 Redmine::Plugin.register :redmine_trips_journal do
   name 'Trips journal'
   author 'Roman Shipiev'
-  description 'Plugin is used for registration of trips employees (duration of trips are less 24 hours)'
+  description 'Registration of trips employees (duration of trips are less 24 hours)'
   version '0.0.2'
-  url 'https://github.com/rubynovich/redmine_redmine_trips_journal'
+  url 'https://bitbucket.org/rubynovich/redmine_redmine_trips_journal'
   author_url 'http://roman.shipiev.me'
 
   project_module :trips do

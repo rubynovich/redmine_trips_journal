@@ -50,7 +50,7 @@ class Trip < ActiveRecord::Base
   end
 
   def check_trip_end_time
-    if self.trip_end_time.seconds_since_midnight-self.trip_start_time.seconds_since_midnight <= 0
+    if self.trip_end_time.seconds_since_midnight - self.trip_start_time.seconds_since_midnight <= 0
       errors.add :trip_start_time, :invalid
       errors.add :trip_end_time, :invalid
     end
