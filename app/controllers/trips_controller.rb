@@ -4,8 +4,9 @@ class TripsController < ApplicationController
   before_filter :get_projects, :only => [:index, :new, :create, :edit, :update]
   before_filter :get_issues, :only => [:index, :new, :create, :edit, :update]
   before_filter :get_current_date
-  before_filter :new_object, :only => [:index, :new, :create]
+  before_filter :new_object, :only => [:create]
   before_filter :find_object, :only => [:edit, :show, :update, :destroy]
+  before_filter :set_today_for_new_object, :only => [:index, :new]
 
   def index
     @current_dates = [@current_date-2.week, @current_date-1.week, @current_date, @current_date+1.week, @current_date+2.week]
@@ -13,7 +14,6 @@ class TripsController < ApplicationController
   end
 
   def new
-    @object.trip_on = Date.today
   end
 
   def create
@@ -104,5 +104,10 @@ class TripsController < ApplicationController
 
     def find_object
       @object = Trip.find(params[:id])
+    end
+
+    def set_today_for_new_object
+      new_object
+      @object.trip_on = Date.today
     end
 end
