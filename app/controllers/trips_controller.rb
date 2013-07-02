@@ -99,6 +99,7 @@ class TripsController < ApplicationController
     def new_object
       @object = Trip.new(params[:trip])
       @object.project_id = @project.id if get_project.present?
+      @object.trip_on = Date.today
     end
 
     def find_object
