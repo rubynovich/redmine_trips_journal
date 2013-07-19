@@ -18,13 +18,12 @@ class TripsController < ApplicationController
 
   def create
     @object.user = User.current
-    if @object.valid?
-      @object.create_plan
-      @object.save
+    @object.create_plan
+    if @object.save
       flash[:notice] = l(:notice_successful_create)
       redirect_back_or_default :action => :index
     else
-      render :action => :new
+      render action: 'new'
     end
   end
 
@@ -43,9 +42,9 @@ class TripsController < ApplicationController
         @object.save
       end
       flash[:notice] = l(:notice_successful_update)
-      redirect_back_or_default :action => :index
+      redirect_back_or_default action: 'index'
     else
-      render :action => :edit
+      render action: 'edit'
     end
   end
 
@@ -57,7 +56,7 @@ class TripsController < ApplicationController
     else
       flash[:notice] = l(:notice_successful_delete)
     end
-    redirect_to params.merge(:action => :index)
+    redirect_to params.merge(action: 'index')
   end
 
   private
