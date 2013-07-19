@@ -61,7 +61,7 @@ class Trip < ActiveRecord::Base
   end
 
   def create_plan
-    self.estimated_time = EstimatedTime.create(
+    self.estimated_time = EstimatedTime.new(
       :issue => self.issue,
       :plan_on => self.trip_on,
       :user => User.current,
