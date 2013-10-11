@@ -1,5 +1,8 @@
 # English strings go here for Rails i18n
 en:
+
+  label_workflow_menu: Workflow
+
   permission_view_trips: "View trips"
   project_module_trips: "Trips"
   label_trip_plural: "Trips"

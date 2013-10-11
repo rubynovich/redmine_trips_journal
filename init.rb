@@ -12,7 +12,29 @@ Redmine::Plugin.register :redmine_trips_journal do
     permission :view_trips,  :trips => [:index, :show]
   end
 
-  menu :top_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{ User.current.allowed_to?({:controller => :trips, :action => :index}, nil, {:global => true}) }
+  Redmine::MenuManager.map :top_menu do |menu| 
 
-  menu :project_menu, :trips, {:controller => :trips, :action => :index}, :caption => :label_trip_plural, :param => :project_id, :if => Proc.new{ User.current.allowed_to?({:controller => :trips, :action => :index}, nil, {:global => true}) }
+    unless menu.exists?(:workflow)
+      menu.push(:workflow, "#", 
+                { :after => :internal_intercourse,
+                  :parent => :top_menu, 
+                  :caption => :label_workflow_menu
+                })
+    end
+
+    menu.push( :trips, {:controller => :trips, :action => :index}, 
+               { :parent => :workflow,
+                 :caption => :label_trip_plural, 
+                 :param => :project_id, 
+                 :if => Proc.new{ User.current.allowed_to?({:controller => :trips, :action => :index}, nil, {:global => true}) }
+               })
+
+  end
+
+  menu( :project_menu, :trips, {:controller => :trips, :action => :index}, 
+        { :caption => :label_trip_plural, 
+          :param => :project_id, 
+          :if => Proc.new{ User.current.allowed_to?({:controller => :trips, :action => :index}, nil, {:global => true}) }
+        })
+
 end
