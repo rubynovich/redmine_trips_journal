@@ -14,16 +14,9 @@ Redmine::Plugin.register :redmine_trips_journal do
 
   Redmine::MenuManager.map :top_menu do |menu| 
 
-    unless menu.exists?(:workflow)
-      menu.push(:workflow, "#", 
-                { :after => :internal_intercourse,
-                  :parent => :top_menu, 
-                  :caption => :label_workflow_menu
-                })
-    end
-
+    parent = menu.exists?(:workflow) ? :workflow : :top_menu
     menu.push( :trips, {:controller => :trips, :action => :index}, 
-               { :parent => :workflow,
+               { :parent => parent,
                  :caption => :label_trip_plural, 
                  :param => :project_id, 
                  :if => Proc.new{ User.current.allowed_to?({:controller => :trips, :action => :index}, nil, {:global => true}) }

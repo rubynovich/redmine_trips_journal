@@ -1,8 +1,5 @@
 # Russian strings go here for Rails i18n
 ru:
-
-  label_workflow_menu: Организация работы
-
   permission_view_trips: "Просмотр разъездов"
   project_module_trips: "Разъезды"
   label_trip_plural: "Разъезды"
