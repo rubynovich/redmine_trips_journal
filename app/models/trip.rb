@@ -13,8 +13,12 @@ class Trip < ActiveRecord::Base
     :trip_start_time, :trip_end_time, :comments, :user_id
   validates_uniqueness_of :trip_on, :scope => [:user_id, :trip_start_time, :project_id]
   validates_uniqueness_of :trip_start_time, :scope => [:trip_on, :user_id, :project_id]
-  validate :check_trip_on
-  validate :check_trip_end_time, :if => lambda{ |o| o.trip_start_time.present? && o.trip_end_time.present? }
+  validate :check_trip_on, if: -> (o){o.trip_on.present? && (o.trip_on < Date.today)}
+  validate :check_trip_end_time, if: ->(o){o.trip_start_time.present? && o.trip_end_time.present?}
+  validate :check_start_date_due_date, if: ->(o) do
+    o.issue.present? && o.trip_on.present? &&
+    o.issue.start_date.present? && o.issue.due_date.present?
+  end
 
   if Rails::VERSION::MAJOR >= 3
     scope :in_projects, lambda{ |project_ids|
@@ -44,9 +48,12 @@ class Trip < ActiveRecord::Base
   end
 
   def check_trip_on
-    if self.trip_on && self.trip_on < Date.today
-      errors.add :trip_on, :invalid
-    end
+    errors.add :trip_on, :invalid
+  end
+
+  def check_start_date_due_date
+    errors.add :trip_on, :issue_start_date_overflow if (self.issue.start_date > self.trip_on)
+    errors.add :trip_on, :issue_due_date_overflow if (self.issue.due_date < self.trip_on)
   end
 
   def check_trip_end_time

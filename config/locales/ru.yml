@@ -13,3 +13,10 @@ ru:
   field_trip_end_time: "Время возврата"
   field_trip_on: "Дата отъезда"
   error_unable_delete_trip: "Запись об отъезде не может быть удалена"
+  activerecord:
+    errors:
+      messages:
+        issue_start_date_overflow:
+          "меньше даты начала задачи"
+        issue_due_date_overflow:
+          "больше даты выполнения задачи"
