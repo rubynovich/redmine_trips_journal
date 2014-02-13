@@ -1,0 +1,3 @@
+- if @issue && User.current == @issue.assigned_to && !@issue.closed?
+  %h3
+    = link_to 'Добавить разъезд', {controller: 'trips', action: 'new', trip: {issue_id: @issue.id, trip_on: Date.today.to_s}}, style: 'text-decoration: none;'

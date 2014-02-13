@@ -31,3 +31,22 @@ Redmine::Plugin.register :redmine_trips_journal do
         })
 
 end
+
+
+Rails.configuration.to_prepare do
+
+  require 'hooks.rb'
+
+  [
+   :issue
+  ].each do |cl|
+    require "redmine_recurring_planning/recurring_planning_#{cl}_patch"
+  end
+
+  [
+    [Issue, RecurringPlanningPlugin::IssuePatch]
+  ].each do |cl, patch|
+    cl.send(:include, patch) unless cl.included_modules.include? patch
+  end
+
+end
