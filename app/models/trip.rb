@@ -13,39 +13,22 @@ class Trip < ActiveRecord::Base
     :trip_start_time, :trip_end_time, :comments, :user_id
   validates_uniqueness_of :trip_on, :scope => [:user_id, :trip_start_time, :project_id]
   validates_uniqueness_of :trip_start_time, :scope => [:trip_on, :user_id, :project_id]
-  validate :check_trip_on, if: -> (o){o.trip_on.present? && (o.trip_on < Date.today)}
-  validate :check_trip_end_time, if: ->(o){o.trip_start_time.present? && o.trip_end_time.present?}
-  validate :check_start_date_due_date, if: ->(o) do
+  validate :check_trip_on, if: Proc.new{|o| o.trip_on.present? && (o.trip_on < Date.today)}
+  validate :check_trip_end_time, if: Proc.new{ |o| o.trip_start_time.present? && o.trip_end_time.present?}
+  validate :check_start_date_due_date, if: Proc.new{|o|
     o.issue.present? && o.trip_on.present? &&
     o.issue.start_date.present? && o.issue.due_date.present?
-  end
+  }
 
-  if Rails::VERSION::MAJOR >= 3
-    scope :in_projects, lambda{ |project_ids|
-      where("project_id IN (?)", project_ids)
-    }
+  scope :in_projects, lambda{ |project_ids|
+    where("project_id IN (?)", project_ids)
+  }
 
-    scope :actual, lambda{ |start_date, due_date|
-      if start_date.present? && due_date.present?
-        where("trip_on BETWEEN ? AND ?", start_date, due_date)
-      end
-    }
-  else
-    named_scope :in_projects, lambda{ |project_ids|
-      {
-        :conditions => ["project_id IN (?)", project_ids]
-      }
-    }
-
-    named_scope :actual, lambda{ |start_date, due_date|
-      if start_date.present? && due_date.present?
-        { :conditions =>
-            ["trip_on BETWEEN :start_date AND :due_date",
-              {:start_date => start_date, :due_date => due_date}]
-        }
-      end
-    }
-  end
+  scope :actual, lambda{ |start_date, due_date|
+    if start_date.present? && due_date.present?
+      where("trip_on BETWEEN ? AND ?", start_date, due_date)
+    end
+  }
 
   def check_trip_on
     errors.add :trip_on, :invalid
