@@ -35,7 +35,8 @@
           %option{:value => project.identifier}
             = project.name
     :javascript
-      $('#project_id').on("change", function(e) {e.preventDefault(); $('#project_form').submit();});
+      $('#project_id').select2();
+      $('#project_id').on("change", function(e) {e.preventDefault(); console.log('test_sumbit'); $('#project_form').submit();});
   - if @project.present?
     = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'
 
