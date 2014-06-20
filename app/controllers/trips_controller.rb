@@ -10,7 +10,12 @@ class TripsController < ApplicationController
 
   def index
     @current_dates = [@current_date-2.week, @current_date-1.week, @current_date, @current_date+1.week, @current_date+2.week]
-    @collection = Trip.actual(@current_date, @current_date+6.days)
+    if params[:project_id] && (@filter_by_project = Project.where(identifier: params[:project_id]))
+      @collection = Trip.where(project_id: @filter_by_project.id).actual(@current_date, @current_date+6.days)
+    else
+      @collection = Trip.actual(@current_date, @current_date+6.days)
+    end
+
   end
 
   def new
@@ -84,12 +89,7 @@ class TripsController < ApplicationController
     end
 
     def get_projects
-      if params[:project_id]
-        @projects = Project.active.where(identifier: params[:project_id])
-      else
-        @projects = Project.active.all(:order => :name)
-      end
-
+      @projects = Project.active.all(:order => :name)
     end
 
     def get_current_date
