@@ -21,7 +21,7 @@
             = cur_date.strftime("%d.%m - ") +        |
               (cur_date+6.days).strftime("%d.%m.%Y") |
 
-  %form{:method => :get, :id => :project_form}
+  %form{:method => :get, :id => :trips_filter_project_id_form}
     = hidden_field_tag :current_date, @current_date
     %label{:for=>'project_id'}= l(:field_project) + ":"
     %select{:id => 'project_id', :name => 'project_id', :class => "small"}
@@ -34,9 +34,10 @@
         - else
           %option{:value => project.identifier}
             = project.name
-    :javascript
-      //$('#project_id').select2();
-      $('#project_id').on("change", function(e) {e.preventDefault(); console.log('test_sumbit'); $('#project_form').submit();});
+  :javascript
+     $(document).on('ready page:load page:restore'){
+        $('#project_id').on("change", function(e) {e.preventDefault(); console.log('test_sumbit'); $('#trips_filter_project_id_form').submit();});
+     }
   - if @project.present?
     = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'
 
