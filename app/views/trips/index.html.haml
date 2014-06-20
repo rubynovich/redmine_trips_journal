@@ -36,7 +36,7 @@
             = project.name
   :javascript
      $(document).on('ready page:load page:restore', function(){
-        $('#project_id').on('change', function(e) {
+        $(document).on('change','#project_id', function(e) {
           e.preventDefault();
           console.log('test_sumbit');
           $('#trips_filter_project_id_form').submit();
