@@ -34,6 +34,8 @@
         - else
           %option{:value => project.identifier}
             = project.name
+    :javascript
+      $('#project_id').on("change", function(e) {this.form.submit(); return false;});
   - if @project.present?
     = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'
 
@@ -92,5 +94,3 @@
 
 - html_title(l(:label_trip_plural))
 
-:javascript
-  $('#project_id').on("change", function(e) {this.form.submit(); return false;});
