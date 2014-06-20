@@ -24,7 +24,7 @@
   %form_tag{:method => :get, :id => :project_form}
     = hidden_field_tag :current_date, @current_date
     %label{:for=>'project_id'}= l(:field_project) + ":"
-    %select{:id => 'project_id', :name => 'project_id', :class => "small", :onchange => "this.form.submit(); return false;"}
+    %select{:id => 'project_id', :name => 'project_id', :class => "small"}
       %option
         = l(:label_project_all)
       - @projects.each do |project|
@@ -35,7 +35,7 @@
           %option{:value => project.identifier}
             = project.name
     :javascript
-      $('#project_id').on("select2-selecting", function(e) {$('#project_form').submit(); return false;});
+      $('#project_id').on("change", function(e) {e.preventDefault(); $('#project_form').submit();});
   - if @project.present?
     = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'
 
