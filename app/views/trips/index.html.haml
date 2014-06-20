@@ -91,3 +91,6 @@
 = form if Rails::VERSION::MAJOR >= 3
 
 - html_title(l(:label_trip_plural))
+
+:javascript
+  $('#project_id').on("change", function(e) {this.form.submit(); return false;});
