@@ -21,7 +21,7 @@
             = cur_date.strftime("%d.%m - ") +        |
               (cur_date+6.days).strftime("%d.%m.%Y") |
 
-  %form_tag{:method => :get}
+  %form_tag{:method => :get, :id => :project_form}
     = hidden_field_tag :current_date, @current_date
     %label{:for=>'project_id'}= l(:field_project) + ":"
     %select{:id => 'project_id', :name => 'project_id', :class => "small", :onchange => "this.form.submit(); return false;"}
@@ -35,7 +35,7 @@
           %option{:value => project.identifier}
             = project.name
     :javascript
-      $('#project_id').on("change", function(e) {this.form.submit(); return false;});
+      $('#project_id').on("change", function(e) {$('#project_form').submit(); return false;});
   - if @project.present?
     = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'
 
