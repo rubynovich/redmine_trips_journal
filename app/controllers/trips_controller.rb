@@ -84,7 +84,12 @@ class TripsController < ApplicationController
     end
 
     def get_projects
-      @projects = Project.active.all(:order => :name)
+      if params[:project_id]
+        @projects = Project.active.where(identifier: params[:project_id])
+      else
+        @projects = Project.active.all(:order => :name)
+      end
+
     end
 
     def get_current_date
