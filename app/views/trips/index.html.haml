@@ -7,8 +7,6 @@
   %legend= l(:label_filter_plural)
 
   %form{:method => :get}
-    - if @project.present?
-      = hidden_field_tag :project_id, @project.identifier
     %label{:for => :current_date}= l(:field_trip_on) + ":"
     %select{:id => :current_date, :name => :current_date, :class => "small", :onchange => "this.form.submit(); return false;"}
       - @current_dates.each do |cur_date|
@@ -21,10 +19,8 @@
             = cur_date.strftime("%d.%m - ") +        |
               (cur_date+6.days).strftime("%d.%m.%Y") |
 
-  %form{:method => :get, :id => :trips_filter_project_id_form}
-    = hidden_field_tag :current_date, @current_date
     %label{:for=>'project_id'}= l(:field_project) + ":"
-    %select{:id => 'project_id', :name => 'project_id', :class => "small"}
+    %select{:id => 'project_id', :name => 'project_id', :class => "small", :onchange => "this.form.submit(); return false;"}
       %option
         = l(:label_project_all)
       - @projects.each do |project|
@@ -34,14 +30,20 @@
         - else
           %option{:value => project.identifier}
             = project.name
-  :javascript
-     $(document).on('ready page:load page:restore', function(){
-        $(document).on('change','#project_id', function(e) {
-          e.preventDefault();
-          console.log('test_sumbit');
-          $('#trips_filter_project_id_form').submit();
-        });
-     });
+
+    %label{:for=>'user_id'}= l(:field_user) + ":"
+    %select{:id => 'user_id', :name => 'user_id', :class => "small", :onchange => "this.form.submit(); return false;"}
+      %option
+        = l(:prompt_please_select)
+      - @users.each do |user|
+        - if params[:user_id] == user.id.to_s
+          %option{:value => user.id, :selected => "selected"}
+            = user.name
+        - else
+          %option{:value => user.id}
+            = user.name
+
+
   - if @project.present?
     = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'
 

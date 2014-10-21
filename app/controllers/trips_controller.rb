@@ -90,6 +90,7 @@ class TripsController < ApplicationController
 
     def get_projects
       @projects = Project.active.all(:order => :name)
+      @users = User.active.sorted
     end
 
     def get_current_date
