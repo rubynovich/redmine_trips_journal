@@ -30,6 +30,12 @@ class Trip < ActiveRecord::Base
     end
   }
 
+  scope :for_user, lambda{ |user|
+    if user.present?
+      where(user_id: user.id)
+    end
+  }
+
   def check_trip_on
     errors.add :trip_on, :invalid
   end
