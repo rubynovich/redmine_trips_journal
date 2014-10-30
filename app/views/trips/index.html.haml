@@ -43,6 +43,7 @@
           %option{:value => user.id}
             = user.name
 
+  = link_to l(:button_clear), {:action => :index}, :class => 'icon icon-reload' 
 
   - if @project.present?
     = link_to l(:label_trip_new), {:action => :new, :project_id => @project.identifier }, :class => 'icon icon-add'
